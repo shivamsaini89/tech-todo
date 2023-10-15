@@ -3,32 +3,33 @@ import './App.css';
 import TodoList from './TodoList';
 
 function App() {
-  const [list, setList] = useState([]);
+  const [todo, setTodo] = useState([]);
   const [input, setInput] = useState("");
-  const [time, setTime] = useState([]);
 
   const handleChange = (e) => {
     setInput(e.target.value);
   }
-
+// HANDLECLICK FUNCTION FOR UPDATION
   const handleClick = () => {
     if (input === "") {
       alert("Please add items to the list");
     }
     else {
-      setList((prevItems) => {
-        return [...prevItems, input];
+      const newTodo = {
+        text: input,
+        time: new Date().toLocaleString()
+      }
+      setTodo((todo) => {
+        return [...todo, newTodo];
       });
-      setInput("");
-      setTime((prevTime) => {
-        return [...prevTime, new Date()];
-      });
+      setInput("")
     }
   };
 
+  // ITEM DELETE FUNCTION
   const deleteItem = (id) => {
     console.log("item deleted")
-    setList((prevItems) => {
+    setTodo((prevItems) => {
       return (prevItems.filter((arr, index) => {
         return index !== id
       })
@@ -44,18 +45,24 @@ function App() {
           <br />
           <h1>TODO List</h1>
           <br />
-          <input placeholder='Add TODO Items' onChange={handleChange} value={input} />
-          <button onClick={handleClick}>Add</button>
+          <input placeholder='Add TODO Items'
+          style={{padding: "0.2rem", fontSize: "1.2rem", marginRight: "1rem"}}
+           onChange={handleChange} 
+           value={input} />
+          <button 
+          style={{padding: "0.5rem 1rem", margin:"5px", fontSize: "1.2rem", backgroundColor: "green", color: "white", border: "none", borderRadius: "0.5rem"}}
+          onClick={handleClick}>Add</button>
+
+          {/* LIST STARTS FROM HERE */}
           <ol>
-            {list.map((time, index ) => {
+            {todo.map((todo, index) => {
               return (
                 <TodoList
                   key={index}
                   id={index}
-                  input={input}
-                  time={time}
-                  onDelete={deleteItem}
-                   />
+                  input={todo.text}
+                  time={todo.time} 
+                  onDelete={deleteItem} />
               );
             })}
           </ol>
